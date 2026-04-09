@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>OCEAN WAVE</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<div style="height: 120px;"></div>
+<body>
+
+  
+<div class="hero">
+    <h1>OCEAN WAVE</h1>
+    <p>ИНФОРМАЦИЯ</p>
+</div>
+<div style="height: 120px;"></div>
+  
+<div class="container">
+    <div class="card" onclick="openModal(0)">Запись на студии</div>
+    <div class="card" onclick="openModal(1)">Сведение и мастеринг</div>
+    <div class="card" onclick="openModal(2)">Трек под ключ</div>
+    <div class="card" onclick="openModal(3)">Инструментал</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal(event)">
+    <div class="modal-content">
+      <h2 id="title"></h2>
+
+<div class="modal-body">
+    <p id="text"></p>
+</div>
+
+<a id="linkBtn" class="btn" href="https://vk.com/im/convo/-224350745?entrypoint=community_page&tab=all">ЗАКАЗАТЬ</a>
+    </div>
+</div>
+<div style="height: 50px;"></div>
+
+<div class="waves">
+  <svg viewBox="0 0 2880 320" preserveAspectRatio="none">
+    
+    <!-- первая волна -->
+    <path d="M0,160 C480,260 960,60 1440,160 C1920,260 2400,60 2880,160 L2880,320 L0,320 Z"></path>
+    
+  </svg>
+</div> 
+  
+<script>
+const data = [
+    {
+        title: "Запись на студии",
+        text: `Почасовая аренда студии
+
+С 9:00 до 23:00 :
+
+1ч — 1000 ₽
+2ч — 1500 ₽
+3ч — 2500 ₽
+
+С 23:00 до 8:00 :
+
+1ч — 800 ₽
+
+Для бронирования требуется 50% предоплата`,
+        link: "https://vk.com/im/convo/-224350745?entrypoint=community_page&tab=all"
+    },
+    {
+        title: "Сведение и мастеринг",
+        text: `Профессиональное сведение и мастеринг вашего трека — 3000 ₽
+Придадим вашему треку глубину, объем и характер, чтобы он уверенно звучал на любых площадках.
+
+Срок выполнения — 3-4 рабочих дня.
+
+Одна правка включена.
+Каждая дополнительная правка — 500 ₽`,
+        link: "https://vk.com/im/convo/-224350745?entrypoint=community_page&tab=all"
+    },
+    {
+        title: "Трек под ключ",
+        text: `Трек под ключ — от 15 000 ₽.
+В услугу входит: разработка уникального инструментала с учётом ваших пожеланий и выбранных референсов, помощь в написании текста, а также профессиональное сведение и мастеринг.
+
+В результате вы получаете полностью готовый к релизу трек с последующей дистрибуцией на все основные площадки.
+
+Сроки и детали обсуждаются индивидуально.`,
+        link: "https://vk.com/im/convo/-224350745?entrypoint=community_page&tab=all"
+    },
+    {
+        title: "Инструментал",
+        text: `Выбор любого бита из каталога с возможностью оформления по трём типам лицензий в зависимости от целей использования.
+
+ЛИЦЕНЗИИ:
+
+STANDARD — 1 000 ₽
+Лицензия включает формат MP3 трека из каталога
+Права на инструментал остаются за нами.
+Подходит для демо-записей, черновых версий — не для дистрибуции
+
+PREMIUM — 3 000 р
+Лицензия включает форматы MP3 WAV STEMS трека из каталога
+Оптимальный вариант для коммерческих релизов с профессиональной обработкой и доработкой аранжировки.
+
+EXCLUSIVE — 15 000 р
+Лицензия включает MP3, WAV и STEMS с полным переходом прав на инструментал к покупателю.
+Вы получаете эксклюзивное право использования бита без ограничений.
+Инструментал снимается с продажи после приобретения лицензии.`,
+        link: "https://vk.com/im/convo/-224350745?entrypoint=community_page&tab=all"
+    }
+];
+
+const modal = document.getElementById('modal');
+const content = document.querySelector('.modal-content');
+
+let startX = 0;
+let startY = 0;
+let currentX = 0;
+let currentY = 0;
+let isDragging = false;
+
+function openModal(i){
+    modal.classList.add('active');
+
+    document.getElementById('title').innerText = data[i].title;
+    document.getElementById('text').innerText = data[i].text;
+    document.getElementById('linkBtn').href = data[i].link;
+
+    resetPosition();
+}
+
+function closeModal(e){
+    if(e.target.id === "modal"){
+        modal.classList.remove('active');
+        resetPosition();
+    }
+}
+
+function resetPosition(){
+    currentX = 0;
+    currentY = 0;
+    content.style.transition = "transform 0.4s cubic-bezier(.2,.8,.2,1)";
+    content.style.transform = "translate(0px, 0px) scale(1)";
+    setTimeout(() => {
+        content.style.transition = "";
+    }, 100);
+}
+function goToLink(e){
+    e.stopPropagation(); // 👈 ВАЖНО
+}
+  
+/* 🧊 DRAG / JELLY EFFECT */
+  
+content.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    startX = e.clientX - currentX;
+    startY = e.clientY - currentY;
+    content.setPointerCapture(e.pointerId);
+});
+
+content.addEventListener('pointermove', (e) => {
+    if(!isDragging) return;
+
+    currentX = e.clientX - startX;
+    currentY = e.clientY - startY;
+
+    let rotate = currentX * 0.001;
+
+    content.style.transform =
+        `translate(${currentX}px, ${currentY}px) scale(1.02) rotate(${rotate}deg)`;
+});
+
+content.addEventListener('pointerup', () => {
+    isDragging = false;
+
+    // 🧠 возврат как "желе"
+    content.style.transition = "transform 0.6s cubic-bezier(.2,1.4,.2,1)";
+    content.style.transform = "translate(0px, 0px) scale(1) rotate(0deg)";
+
+    currentX = 0;
+    currentY = 0;
+
+    setTimeout(() => {
+        content.style.transition = "";
+    }, 100);
+});
+  const cards = document.querySelectorAll('.card');
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            entry.target.classList.add('show');
+        }
+    });
+}, {
+    threshold: 0.2
+});
+  document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.05) * 10;
+    const y = (e.clientY / window.innerHeight - 0.05) * 10;
+
+    document.querySelectorAll('.card').forEach(card => {
+        card.style.transform = `translate(${x}px, ${y}px)`;
+    });
+});
+
+cards.forEach(card => observer.observe(card));
+
+</script>
+
+</body>
+</html>

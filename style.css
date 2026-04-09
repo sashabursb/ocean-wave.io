@@ -1,0 +1,249 @@
+
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap');
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background: #000000; /* ЧЁРНЫЙ ФОН */
+    color: white;
+    overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 120px 20px 60px;
+}
+
+.hero h1 {
+    font-size: 64px;
+    letter-spacing: 6px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.hero p {
+    margin-top: 20px;
+    font-size: 18px;
+    opacity: 0.65;
+}
+
+/* PANELS */
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 40px;
+    padding-bottom: 320px; /* 👈 ВАЖНО */
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* 🔥 GLASSMORPHISM как iOS */
+.card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 26px;
+    padding: 30px;
+    cursor: pointer;
+
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+
+    box-shadow: 
+        0 10px 40px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+
+    transition: 0.35s cubic-bezier(.2,.8,.2,1);
+    text-align: center;
+}
+
+.card:hover {
+    transform: scale(1.06);
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.7);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.35s ease;
+}
+
+.modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 420px;
+
+    background: rgba(20,20,20,0.65);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+
+    border-radius: 30px;
+    padding: 25px;
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    box-shadow: 
+        0 20px 60px rgba(0,0,0,0.8),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+
+    transform: scale(0.8) translateY(40px);
+    transition: 0.35s cubic-bezier(.2,.8,.2,1);
+
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 70vh;
+}
+
+.modal.active .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.modal h2 {
+    margin-top: 0;
+}
+
+.modal p {
+    opacity: 0.75;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.btn {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: #0a84ff;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+  .modal-content {
+    will-change: transform;
+    touch-action: none;
+}
+  .modal-body {
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-top: 10px;
+}
+
+/* скрыть scrollbar (как iOS) */
+.modal-body::-webkit-scrollbar {
+    width: 0px;
+}
+  .modal-body {
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-top: 10px;
+
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* iOS inertia */
+}
+
+/* мягкий fade сверху/снизу */
+.modal-body::before,
+.modal-body::after {
+    content: "";
+    position: sticky;
+    left: 0;
+    right: 0;
+    height: 20px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.modal-body::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(20,20,20,0.9), transparent);
+}
+
+.modal-body::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(20,20,20,0.9), transparent);
+}
+  .modal-body p {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+  .card {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+}
+
+.card.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: 0.6s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 0.75;
+        transform: translateY(0);
+    }
+}
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 140px;
+    pointer-events: none;
+
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0,0,0,0.9)
+    );
+}
+/* 🌊 слой волн */
+.waves {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.waves svg {
+    width: 200%;
+    height: 100%;
+}
+
+/* сама волна */
+.waves path {
+    fill: rgba(255,255,255,0.06);
+    animation: waveLoop 12s linear infinite;
+}
+
+/* 🔁 идеальный бесшовный цикл */
+@keyframes waveLoop {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-1440px);
+    }
+}
